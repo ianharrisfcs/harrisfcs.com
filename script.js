@@ -11,6 +11,42 @@ document.querySelectorAll('.topbar .wrap').forEach(wrap=>{
   wrap.appendChild(links);
 });
 
+// Mobile navigation: clone the existing page links so every route remains easy to navigate.
+document.querySelectorAll('.nav .wrap').forEach(navWrap=>{
+  const navlinks=navWrap.querySelector('.navlinks');
+  if(!navlinks || navWrap.querySelector('.menu-toggle')) return;
+  const button=document.createElement('button');
+  button.className='menu-toggle';
+  button.type='button';
+  button.setAttribute('aria-expanded','false');
+  button.setAttribute('aria-label','Open navigation');
+  button.innerHTML='<span></span><span></span><span></span>';
+  const panel=document.createElement('div');
+  panel.className='mobile-nav';
+  const primaryLinks=[
+    ['Managed IT','/managed-it-services/'],
+    ['Cybersecurity','/cybersecurity/'],
+    ['WISP & Compliance','/wisp-compliance/'],
+    ['IT Projects','/it-projects/'],
+    ['Tax & Accounting','/tax-accounting-it-wisp/'],
+    ['Healthcare','/healthcare-it-hipaa/'],
+    ['Blog','/blog/'],
+    ['About','/about/'],
+    ['FAQ','/faq/'],
+    ['Client Portal','https://harrisfcs.rmmservices.net/']
+  ];
+  panel.innerHTML='<div class="mobile-nav-inner">'+primaryLinks.map(([label,href])=>`<a href="${href}">${label}</a>`).join('')+'<a class="btn primary" href="/#contact">Start a Conversation</a></div>';
+  navWrap.appendChild(button);
+  navWrap.parentElement.appendChild(panel);
+  const close=()=>{panel.classList.remove('open');button.classList.remove('open');button.setAttribute('aria-expanded','false');document.body.classList.remove('menu-open')};
+  button.addEventListener('click',()=>{
+    const open=!panel.classList.contains('open');
+    panel.classList.toggle('open',open);button.classList.toggle('open',open);button.setAttribute('aria-expanded',String(open));document.body.classList.toggle('menu-open',open);
+  });
+  panel.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
+  window.addEventListener('resize',()=>{if(window.innerWidth>780) close()});
+});
+
 // Jotform AI Agent bootstrap. Add the current agent ID as
 // <meta name="jotform-agent-id" content="YOUR_AGENT_ID"> to activate globally.
 const jotformAgentId=document.querySelector('meta[name="jotform-agent-id"]')?.content?.trim();
