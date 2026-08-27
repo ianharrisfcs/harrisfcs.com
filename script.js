@@ -1,3 +1,11 @@
+// Apply the refinement layer to every page, including older landing pages.
+if(!document.querySelector('link[href="/refinements.css"]')){
+  const refinementStyles=document.createElement('link');
+  refinementStyles.rel='stylesheet';
+  refinementStyles.href='/refinements.css';
+  document.head.appendChild(refinementStyles);
+}
+
 document.querySelectorAll('[data-year]').forEach(el=>el.textContent=new Date().getFullYear());
 
 // Keep the contact/community utility bar consistent across every page.
@@ -11,7 +19,7 @@ document.querySelectorAll('.topbar .wrap').forEach(wrap=>{
   wrap.appendChild(links);
 });
 
-// Mobile navigation: clone the existing page links so every route remains easy to navigate.
+// Mobile navigation: use a consistent global menu on every route.
 document.querySelectorAll('.nav .wrap').forEach(navWrap=>{
   const navlinks=navWrap.querySelector('.navlinks');
   if(!navlinks || navWrap.querySelector('.menu-toggle')) return;
