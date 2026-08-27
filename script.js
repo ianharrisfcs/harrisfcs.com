@@ -12,14 +12,14 @@ document.querySelectorAll('[data-year]').forEach(el=>el.textContent=new Date().g
 document.querySelectorAll('.topbar .wrap').forEach(wrap=>{
   if(wrap.querySelector('.topbar-links')) return;
   const existing=[...wrap.children].find(el=>el.tagName!=='DIV');
-  if(existing) existing.textContent='Oregon-based · Serving organizations nationwide';
+  if(existing) existing.textContent='Oregon-based · Serving nationwide';
   const links=document.createElement('div');
   links.className='topbar-links';
-  links.innerHTML='<a href="mailto:office@harrisfcs.com">office@harrisfcs.com</a><a href="tel:+15412040597">541-204-0597</a><a href="https://www.skool.com/securetax-network-3635" target="_blank" rel="noopener">Skool Community ↗</a><a href="https://harrisfcs.rmmservices.net/" target="_blank" rel="noopener">Client Portal ↗</a>';
+  links.innerHTML='<a href="mailto:office@harrisfcs.com">office@harrisfcs.com</a><a href="tel:+15412040597">541-204-0597</a><a href="https://www.skool.com/securetax-network-3635" target="_blank" rel="noopener">Skool ↗</a><a href="https://harrisfcs.rmmservices.net/" target="_blank" rel="noopener">Client Portal ↗</a>';
   wrap.appendChild(links);
 });
 
-// Mobile navigation: use a consistent global menu on every route.
+// Mobile navigation.
 document.querySelectorAll('.nav .wrap').forEach(navWrap=>{
   const navlinks=navWrap.querySelector('.navlinks');
   if(!navlinks || navWrap.querySelector('.menu-toggle')) return;
@@ -43,7 +43,7 @@ document.querySelectorAll('.nav .wrap').forEach(navWrap=>{
     ['FAQ','/faq/'],
     ['Client Portal','https://harrisfcs.rmmservices.net/']
   ];
-  panel.innerHTML='<div class="mobile-nav-inner">'+primaryLinks.map(([label,href])=>`<a href="${href}">${label}</a>`).join('')+'<a class="btn primary" href="/#contact">Start a Conversation</a></div>';
+  panel.innerHTML='<div class="mobile-nav-inner">'+primaryLinks.map(([label,href])=>`<a href="${href}">${label}</a>`).join('')+'<a class="btn primary" href="/#contact">Talk to Us</a></div>';
   navWrap.appendChild(button);
   navWrap.parentElement.appendChild(panel);
   const close=()=>{panel.classList.remove('open');button.classList.remove('open');button.setAttribute('aria-expanded','false');document.body.classList.remove('menu-open')};
@@ -55,28 +55,31 @@ document.querySelectorAll('.nav .wrap').forEach(navWrap=>{
   window.addEventListener('resize',()=>{if(window.innerWidth>780) close()});
 });
 
-// Jotform AI Agent bootstrap. Add the current agent ID as
-// <meta name="jotform-agent-id" content="YOUR_AGENT_ID"> to activate globally.
-const jotformAgentId=document.querySelector('meta[name="jotform-agent-id"]')?.content?.trim();
-if(jotformAgentId){
-  const loader=document.createElement('script');
-  loader.src='https://cdn.jotfor.ms/s/umd/latest/for-embedded-agent.js';
-  loader.onload=()=>{
-    if(!window.AgentInitializer) return;
-    window.AgentInitializer.init({
-      agentRenderURL:`https://agent.jotform.com/${jotformAgentId}`,
-      rootId:`JotformAgent-${jotformAgentId}`,
-      formID:jotformAgentId,
-      queryParams:['skipWelcome=1','maximizable=1'],
-      domain:'https://www.jotform.com',
-      isDraggable:false,
-      background:'linear-gradient(180deg, #0f948b 0%, #0b7a75 100%)',
-      buttonBackgroundColor:'#0b7a75',
-      buttonIconColor:'#FFFFFF',
-      variant:false,
-      customizations:{greeting:'Yes',greetingMessage:'Hi! How can I help?',openByDefault:'No',pulse:'Yes',position:'right',autoOpenChatIn:'0'},
-      isVoice:undefined
-    });
-  };
-  document.head.appendChild(loader);
-}
+// HarrisFCS Jotform AI Agent — copied from the prior site source.
+const jotformLoader=document.createElement('script');
+jotformLoader.src='https://cdn.jotfor.ms/s/umd/latest/for-embedded-agent.js';
+jotformLoader.onload=()=>{
+  if(!window.AgentInitializer) return;
+  window.AgentInitializer.init({
+    agentRenderURL:'https://agent.jotform.com/0196a66dafd075e799d373f79a1e2a8e7bfe',
+    rootId:'JotformAgent-0196a66dafd075e799d373f79a1e2a8e7bfe',
+    formID:'0196a66dafd075e799d373f79a1e2a8e7bfe',
+    queryParams:['skipWelcome=1','maximizable=1'],
+    domain:'https://www.jotform.com',
+    isDraggable:false,
+    background:'linear-gradient(180deg, #3A5800 0%, #3A5800 100%)',
+    buttonBackgroundColor:'#004BB6',
+    buttonIconColor:'#F8FEEC',
+    variant:false,
+    customizations:{
+      greeting:'Yes',
+      greetingMessage:'Hi! How can I assist you?',
+      openByDefault:'No',
+      pulse:'Yes',
+      position:'right',
+      autoOpenChatIn:'0'
+    },
+    isVoice:false
+  });
+};
+document.head.appendChild(jotformLoader);
