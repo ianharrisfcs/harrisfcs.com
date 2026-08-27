@@ -25,6 +25,71 @@ if(location.pathname==='/' || location.pathname==='/index.html'){
   if(homeNav){
     homeNav.innerHTML='<a href="#industries">Industries</a><a href="#services">Services</a><a href="/wisp-compliance/">WISP</a><a href="/blog/">Blog</a><a href="/about/">About</a><a class="btn primary" href="#contact">Talk to Us</a>';
   }
+
+  // Replace the static managed-environment graphic with a live terminal vignette.
+  const oldConsole=document.querySelector('.ops-console');
+  if(oldConsole){
+    const terminal=document.createElement('div');
+    terminal.className='hero-terminal';
+    terminal.setAttribute('aria-label','HarrisFCS system terminal animation');
+    terminal.innerHTML=`
+      <div class="terminal-chrome">
+        <div class="terminal-dots"><i></i><i></i><i></i></div>
+        <div class="terminal-title">harrisfcs — operations</div>
+        <div class="terminal-status">secure session</div>
+      </div>
+      <div class="terminal-screen">
+        <div class="terminal-history" id="terminal-history"></div>
+        <div class="terminal-line"><span class="terminal-prompt">ian@harrisfcs:~$</span> <span id="terminal-typing"></span><span class="terminal-cursor">▋</span></div>
+      </div>
+      <div class="terminal-footer"><span>monitor</span><span>patch</span><span>secure</span><span>verify</span><span>support</span></div>`;
+    oldConsole.replaceWith(terminal);
+
+    const typingEl=terminal.querySelector('#terminal-typing');
+    const historyEl=terminal.querySelector('#terminal-history');
+    const commands=[
+      {cmd:'scan --environment',out:'✓ endpoints online   ✓ patch state current'},
+      {cmd:'secure --identity',out:'✓ MFA enforced        ✓ risky access reviewed'},
+      {cmd:'verify --controls',out:'✓ backups checked     ✓ policies aligned'},
+      {cmd:'monitor --threats',out:'✓ endpoint telemetry  ✓ alerts watched'},
+      {cmd:'support --business',out:'✓ users supported    ✓ issues resolved'}
+    ];
+    let commandIndex=0;
+    let charIndex=0;
+    const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const addHistory=(entry)=>{
+      const block=document.createElement('div');
+      block.className='terminal-entry';
+      block.innerHTML=`<div><span class="terminal-prompt">ian@harrisfcs:~$</span> ${entry.cmd}</div><div class="terminal-output">${entry.out}</div>`;
+      historyEl.appendChild(block);
+      while(historyEl.children.length>3) historyEl.removeChild(historyEl.firstChild);
+      terminal.querySelector('.terminal-screen').scrollTop=terminal.querySelector('.terminal-screen').scrollHeight;
+    };
+
+    if(reduceMotion){
+      addHistory(commands[0]);
+      addHistory(commands[1]);
+      typingEl.textContent=commands[2].cmd;
+    }else{
+      const typeNext=()=>{
+        const entry=commands[commandIndex];
+        typingEl.textContent=entry.cmd.slice(0,charIndex++);
+        if(charIndex<=entry.cmd.length){
+          setTimeout(typeNext,38+Math.random()*34);
+          return;
+        }
+        setTimeout(()=>{
+          addHistory(entry);
+          typingEl.textContent='';
+          charIndex=0;
+          commandIndex=(commandIndex+1)%commands.length;
+          setTimeout(typeNext,520);
+        },620);
+      };
+      setTimeout(typeNext,500);
+    }
+  }
 }
 
 // Mobile navigation.
