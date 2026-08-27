@@ -19,6 +19,14 @@ document.querySelectorAll('.topbar .wrap').forEach(wrap=>{
   wrap.appendChild(links);
 });
 
+// Homepage navigation: expose the two primary browsing paths explicitly.
+if(location.pathname==='/' || location.pathname==='/index.html'){
+  const homeNav=document.querySelector('.navlinks');
+  if(homeNav){
+    homeNav.innerHTML='<a href="#industries">Industries</a><a href="#services">Services</a><a href="/wisp-compliance/">WISP</a><a href="/blog/">Blog</a><a href="/about/">About</a><a class="btn primary" href="#contact">Talk to Us</a>';
+  }
+}
+
 // Mobile navigation.
 document.querySelectorAll('.nav .wrap').forEach(navWrap=>{
   const navlinks=navWrap.querySelector('.navlinks');
@@ -32,6 +40,8 @@ document.querySelectorAll('.nav .wrap').forEach(navWrap=>{
   const panel=document.createElement('div');
   panel.className='mobile-nav';
   const primaryLinks=[
+    ['Industries','/#industries'],
+    ['Services','/#services'],
     ['Managed IT','/managed-it-services/'],
     ['Cybersecurity','/cybersecurity/'],
     ['WISP & Compliance','/wisp-compliance/'],
@@ -54,6 +64,20 @@ document.querySelectorAll('.nav .wrap').forEach(navWrap=>{
   panel.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
   window.addEventListener('resize',()=>{if(window.innerWidth>780) close()});
 });
+
+// Remove any Netlify promotional badge/tag if injected into the page.
+const removeNetlifyBadge=()=>{
+  document.querySelectorAll('[class*="netlify"],[id*="netlify"],a[href*="netlify.com"]').forEach(el=>{
+    const text=(el.textContent||'').toLowerCase();
+    const href=(el.getAttribute?.('href')||'').toLowerCase();
+    const style=getComputedStyle(el);
+    const isPromo=text.includes('netlify') || href.includes('netlify.com');
+    const isFloating=style.position==='fixed' || style.position==='sticky';
+    if(isPromo && isFloating) el.remove();
+  });
+};
+removeNetlifyBadge();
+new MutationObserver(removeNetlifyBadge).observe(document.documentElement,{childList:true,subtree:true});
 
 // HarrisFCS Jotform AI Agent — copied from the prior site source.
 const jotformLoader=document.createElement('script');
