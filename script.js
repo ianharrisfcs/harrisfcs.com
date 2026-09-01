@@ -9,24 +9,30 @@ if(!document.querySelector('link[href="/refinements.css"]')){
 document.querySelectorAll('[data-year]').forEach(el=>el.textContent=new Date().getFullYear());
 
 // Keep the contact/community utility bar consistent across every page.
+// WISPCheck lives here as a useful public resource rather than competing with
+// the company's primary navigation.
 document.querySelectorAll('.topbar .wrap').forEach(wrap=>{
-  if(wrap.querySelector('.topbar-links')) return;
   const existing=[...wrap.children].find(el=>el.tagName!=='DIV');
   if(existing) existing.textContent='Oregon-based · Serving nationwide';
-  const links=document.createElement('div');
-  links.className='topbar-links';
-  links.innerHTML='<a href="mailto:office@harrisfcs.com">office@harrisfcs.com</a><a href="tel:+15412040597">541-204-0597</a><a href="https://www.skool.com/securetax-network-3635" target="_blank" rel="noopener">Skool ↗</a><a href="https://harrisfcs.rmmservices.net/" target="_blank" rel="noopener">Client Portal ↗</a>';
-  wrap.appendChild(links);
+  let links=wrap.querySelector('.topbar-links');
+  if(!links){
+    links=document.createElement('div');
+    links.className='topbar-links';
+    wrap.appendChild(links);
+  }
+  links.innerHTML='<a href="mailto:office@harrisfcs.com">office@harrisfcs.com</a><a href="tel:+15412040597">541-204-0597</a><a href="https://wispcheck.com" target="_blank" rel="noopener">WISPCheck ↗</a><a href="https://www.skool.com/securetax-network-3635" target="_blank" rel="noopener">Skool ↗</a><a href="https://harrisfcs.rmmservices.net/" target="_blank" rel="noopener">Client Portal ↗</a>';
 });
 
-// Homepage navigation: expose the two primary browsing paths explicitly.
-if(location.pathname==='/' || location.pathname==='/index.html'){
-  const homeNav=document.querySelector('.navlinks');
-  if(homeNav){
-    homeNav.innerHTML='<a href="#industries">Industries</a><a href="#services">Services</a><a href="/wisp-compliance/">WISP</a><a href="/blog/">Blog</a><a href="/about/">About</a><a class="btn primary" href="#contact">Talk to Us</a>';
-  }
+// One primary navigation model across the whole site.
+// Industry/service discovery stays prominent; WISP remains available in page
+// content, service pages, resources, and the utility-bar WISPCheck link.
+document.querySelectorAll('.navlinks').forEach(navlinks=>{
+  const contactHref=(location.pathname==='/' || location.pathname==='/index.html')?'#contact':'/#contact';
+  navlinks.innerHTML='<a href="/#industries">Industries</a><a href="/#services">Services</a><a href="/blog/">Blog</a><a href="/about/">About</a><a class="btn primary" href="'+contactHref+'">Talk to Us</a>';
+});
 
-  // Replace the static managed-environment graphic with a live terminal vignette.
+// Homepage terminal vignette.
+if(location.pathname==='/' || location.pathname==='/index.html'){
   const oldConsole=document.querySelector('.ops-console');
   if(oldConsole){
     const terminal=document.createElement('div');
@@ -109,10 +115,10 @@ document.querySelectorAll('.nav .wrap').forEach(navWrap=>{
     ['Services','/#services'],
     ['Managed IT','/managed-it-services/'],
     ['Cybersecurity','/cybersecurity/'],
-    ['WISP & Compliance','/wisp-compliance/'],
     ['IT Projects','/it-projects/'],
     ['Tax & Accounting','/tax-accounting-it-wisp/'],
     ['Healthcare','/healthcare-it-hipaa/'],
+    ['WISPCheck','https://wispcheck.com'],
     ['Blog','/blog/'],
     ['About','/about/'],
     ['FAQ','/faq/'],
