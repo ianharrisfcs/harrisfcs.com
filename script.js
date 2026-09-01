@@ -10,10 +10,18 @@ document.querySelectorAll('[data-year]').forEach(el=>el.textContent=new Date().g
 
 // Keep the contact/community utility bar consistent across every page.
 // WISPCheck lives here as a useful public resource rather than competing with
-// the company's primary navigation.
+// the company's primary navigation. Older pages sometimes include a second
+// legacy contact span; normalize those away so email/phone only appear once.
 document.querySelectorAll('.topbar .wrap').forEach(wrap=>{
-  const existing=[...wrap.children].find(el=>el.tagName!=='DIV');
-  if(existing) existing.textContent='Oregon-based · Serving nationwide';
+  const nonDivChildren=[...wrap.children].filter(el=>el.tagName!=='DIV');
+  let locationLabel=nonDivChildren.shift();
+  if(!locationLabel){
+    locationLabel=document.createElement('span');
+    wrap.prepend(locationLabel);
+  }
+  locationLabel.textContent='Oregon-based · Serving nationwide';
+  nonDivChildren.forEach(el=>el.remove());
+
   let links=wrap.querySelector('.topbar-links');
   if(!links){
     links=document.createElement('div');
