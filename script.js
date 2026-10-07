@@ -54,7 +54,7 @@ if(location.pathname==='/' || location.pathname==='/index.html'){
       </div>
       <div class="terminal-screen">
         <div class="terminal-history" id="terminal-history"></div>
-        <div class="terminal-line"><span class="terminal-prompt">ian@harrisfcs:~$</span> <span id="terminal-typing"></span><span class="terminal-cursor">▋</span></div>
+        <div class="terminal-line"><span class="terminal-prompt">admin@harrisfcs:~$</span> <span id="terminal-typing"></span><span class="terminal-cursor">▋</span></div>
       </div>
       <div class="terminal-footer"><span>monitor</span><span>patch</span><span>secure</span><span>verify</span><span>support</span></div>`;
     oldConsole.replaceWith(terminal);
@@ -75,7 +75,7 @@ if(location.pathname==='/' || location.pathname==='/index.html'){
     const addHistory=(entry)=>{
       const block=document.createElement('div');
       block.className='terminal-entry';
-      block.innerHTML=`<div><span class="terminal-prompt">ian@harrisfcs:~$</span> ${entry.cmd}</div><div class="terminal-output">${entry.out}</div>`;
+      block.innerHTML=`<div><span class="terminal-prompt">admin@harrisfcs:~$</span> ${entry.cmd}</div><div class="terminal-output">${entry.out}</div>`;
       historyEl.appendChild(block);
       while(historyEl.children.length>3) historyEl.removeChild(historyEl.firstChild);
       terminal.querySelector('.terminal-screen').scrollTop=terminal.querySelector('.terminal-screen').scrollHeight;
