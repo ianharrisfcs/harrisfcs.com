@@ -16,5 +16,5 @@ body{font-family:"Aptos","Segoe UI Variable Text","Segoe UI",-apple-system,Blink
 @media(prefers-reduced-motion:reduce){.terminal-cursor{animation:none}}
 
 
-/* Homepage proof card icons */
-.proof{display:flex;gap:12px;align-items:flex-start}.proof-icon{width:32px;height:32px;flex:0 0 32px;border:1px solid rgba(15,148,139,.2);border-radius:10px;display:grid;place-items:center;background:rgba(15,148,139,.05);color:var(--teal)}.proof-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.proof>div{min-width:0}
+/* Homepage proof cards */
+.proof{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}.proof-mark{font:800 10px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.06em;color:var(--teal);padding-top:4px;opacity:.72}.proof>div{min-width:0}.proof strong{display:block;margin-bottom:2px}
