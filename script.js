@@ -186,3 +186,19 @@ jotformLoader.onload=()=>{
   });
 };
 document.head.appendChild(jotformLoader);
+
+// Curated Google review display. Add only independently verified, verbatim reviews.
+// Entries: {name, text, rating:5, date:'YYYY-MM-DD', url:'https://...'}
+const curatedGoogleReviews=[];
+(function initReviewCarousel(){
+ const section=document.querySelector('.client-reviews');if(!section)return;
+ const track=section.querySelector('[data-reviews-track]');const viewport=section.querySelector('[data-reviews-viewport]');
+ const prev=section.querySelector('[data-review-prev]');const next=section.querySelector('[data-review-next]');
+ const count=section.querySelector('[data-review-count]');
+ const reviews=curatedGoogleReviews.filter(r=>r.rating===5&&r.name&&r.text&&/^https:\/\//.test(r.url||''));
+ if(!reviews.length){const empty=document.createElement('div');empty.className='review-empty';empty.textContent='Verified client reviews will appear here soon.';viewport.replaceChildren(empty);prev.hidden=true;next.hidden=true;count.textContent='Google reviews';return;}
+ reviews.forEach(r=>{const card=document.createElement('article');card.className='review-card';const stars=document.createElement('div');stars.className='review-stars';stars.setAttribute('aria-label','5 out of 5 stars');stars.textContent='★★★★★';const quote=document.createElement('p');quote.className='review-quote';quote.textContent='“'+r.text+'”';const name=document.createElement('div');name.className='review-person';name.textContent=r.name;const source=document.createElement('a');source.className='review-source';source.textContent='Google review ↗';source.href=r.url;source.target='_blank';source.rel='noopener noreferrer';card.append(stars,quote,name,source);track.appendChild(card)});
+ count.textContent='Selected five-star Google reviews';let index=0;
+ const update=()=>{const gap=parseFloat(getComputedStyle(track).gap)||0;const card=track.firstElementChild;const visible=Math.max(1,Math.round((viewport.clientWidth+gap)/(card.getBoundingClientRect().width+gap)));const max=Math.max(0,reviews.length-visible);index=Math.min(index,max);track.style.transform='translateX(-'+index*(card.getBoundingClientRect().width+gap)+'px)';prev.disabled=index===0;next.disabled=index===max;};
+ prev.addEventListener('click',()=>{index=Math.max(0,index-1);update()});next.addEventListener('click',()=>{index++;update()});window.addEventListener('resize',update);update();
+})();
