@@ -28,3 +28,8 @@ body{font-family:"Aptos","Segoe UI Variable Text","Segoe UI",-apple-system,Blink
 
 /* Reviews move continuously; JavaScript owns the transform. */
 .reviews-track{transition:none!important}.reviews-viewport{touch-action:pan-y}
+
+/* Homepage headline: balance the shorter copy within the hero column. */
+@media(min-width:961px){.hero .hero-grid h1{font-size:clamp(40px,4.35vw,56px);line-height:1.06;letter-spacing:-.052em;max-width:100%}}
+@media(min-width:601px) and (max-width:960px){.hero .hero-grid h1{font-size:clamp(42px,5.3vw,58px);line-height:1.05}}
+@media(max-width:600px){.hero .hero-grid h1{font-size:clamp(36px,9vw,46px);line-height:1.06;letter-spacing:-.05em}}
