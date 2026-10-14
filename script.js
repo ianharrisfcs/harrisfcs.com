@@ -194,11 +194,9 @@ const curatedGoogleReviews=[{"name":"Zak Barsuglia","text":"Ian is super knowled
  const section=document.querySelector('.client-reviews');if(!section)return;
  const track=section.querySelector('[data-reviews-track]');const viewport=section.querySelector('[data-reviews-viewport]');
  const prev=section.querySelector('[data-review-prev]');const next=section.querySelector('[data-review-next]');
- const count=section.querySelector('[data-review-count]');
  const reviews=curatedGoogleReviews.filter(r=>r.rating===5&&r.name&&r.text);
- if(!reviews.length){const empty=document.createElement('div');empty.className='review-empty';empty.textContent='Verified client reviews will appear here soon.';viewport.replaceChildren(empty);prev.hidden=true;next.hidden=true;count.textContent='Google reviews';return;}
+ if(!reviews.length){const empty=document.createElement('div');empty.className='review-empty';empty.textContent='Verified client reviews will appear here soon.';viewport.replaceChildren(empty);prev.hidden=true;next.hidden=true;return;}
  reviews.forEach(r=>{const card=document.createElement('article');card.className='review-card';const stars=document.createElement('div');stars.className='review-stars';stars.setAttribute('aria-label','5 out of 5 stars');stars.textContent='★★★★★';const quote=document.createElement('p');quote.className='review-quote';quote.textContent='“'+r.text+'”';const name=document.createElement('div');name.className='review-person';name.textContent=r.name;const source=document.createElement('a');source.className='review-source';source.textContent='Google Reviews ↗';source.href='https://www.google.com/maps/search/?api=1&query=HarrisFCS+Grants+Pass+Oregon';source.target='_blank';source.rel='noopener noreferrer';card.append(stars,quote,name,source);track.appendChild(card)});
- count.textContent='';
  // Seamless, slow horizontal movement. Pause on hover, focus, or reduced-motion preference.
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
  if(reviews.length<2){prev.hidden=true;next.hidden=true;return;}
