@@ -45,3 +45,6 @@ body{font-family:"Aptos","Segoe UI Variable Text","Segoe UI",-apple-system,Blink
 
 /* Vendor-neutral terminal presentation */
 .terminal-app-icon{background:#243c48;color:#9be5d9;font:700 12px/1 ui-monospace,Consolas,monospace;padding:7px 6px}.terminal-prompt{color:#82d7c9}.terminal-cursor{color:#82d7c9}.terminal-title{font-family:ui-monospace,Consolas,monospace}
+
+/* Decorative desktop window controls; no interactive window actions */
+.hero-terminal{grid-template-rows:auto 1fr}.terminal-window-controls{display:flex;align-items:center;justify-content:flex-end;gap:0;height:24px}.terminal-window-controls span{position:relative;display:block;width:32px;height:24px}.terminal-window-minimize:after{content:"";position:absolute;left:11px;top:12px;width:11px;height:1px;background:#b6c5d4}.terminal-window-maximize:after{content:"";position:absolute;left:11px;top:7px;width:10px;height:9px;border:1px solid #b6c5d4;border-radius:1px}.terminal-window-close:before,.terminal-window-close:after{content:"";position:absolute;left:15px;top:6px;width:1px;height:13px;background:#b6c5d4;transform:rotate(45deg)}.terminal-window-close:after{transform:rotate(-45deg)}@media(max-width:600px){.terminal-window-controls span{width:25px}.terminal-window-minimize:after,.terminal-window-maximize:after{left:7px}.terminal-window-close:before,.terminal-window-close:after{left:12px}}
