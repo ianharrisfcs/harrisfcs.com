@@ -50,13 +50,13 @@ if(location.pathname==='/' || location.pathname==='/index.html'){
       <div class="terminal-chrome">
         <div class="terminal-app-icon" aria-hidden="true">&gt;_</div>
         <div class="terminal-title">HarrisFCS / system console</div>
-        <div class="terminal-status">DEMO SESSION</div>
+        <div class="terminal-window-controls" aria-hidden="true"><span class="terminal-window-minimize"></span><span class="terminal-window-maximize"></span><span class="terminal-window-close"></span></div>
       </div>
       <div class="terminal-screen">
         <div class="terminal-history" id="terminal-history"></div>
         <div class="terminal-line"><span class="terminal-prompt">harrisfcs:~$</span> <span id="terminal-typing"></span><span class="terminal-cursor">▋</span></div>
       </div>
-      <div class="terminal-footer"><span>monitor</span><span>patch</span><span>secure</span><span>verify</span><span>support</span></div>`;
+      `;
     oldConsole.replaceWith(terminal);
 
     const typingEl=terminal.querySelector('#terminal-typing');
