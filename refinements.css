@@ -36,3 +36,6 @@ body{font-family:"Aptos","Segoe UI Variable Text","Segoe UI",-apple-system,Blink
 
 /* Founder-led positioning in the homepage hero */
 .hero-independence{margin-top:23px;padding:17px 19px 18px;border:1px solid #d5e5e7;border-left:3px solid var(--teal);border-radius:10px;background:rgba(255,255,255,.79)}.hero-independence-label{font-size:10px;font-weight:850;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:7px}.hero-independence h2{font-size:clamp(17px,1.8vw,22px);line-height:1.24;letter-spacing:-.025em;margin:0 0 9px;max-width:none}.hero-independence p{font-size:13px;line-height:1.55;color:var(--muted);margin:0}@media(max-width:600px){.hero-independence{padding:15px 16px}.hero-independence h2{font-size:19px}}
+
+/* Slightly stronger homepage independence statement supporting copy */
+.hero-independence p{font-size:15px;line-height:1.55}
