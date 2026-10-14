@@ -48,13 +48,13 @@ if(location.pathname==='/' || location.pathname==='/index.html'){
     terminal.setAttribute('aria-label','HarrisFCS system terminal animation');
     terminal.innerHTML=`
       <div class="terminal-chrome">
-        <div class="terminal-dots"><i></i><i></i><i></i></div>
-        <div class="terminal-title">harrisfcs — operations</div>
-        <div class="terminal-status">secure session</div>
+        <div class="terminal-app-icon" aria-hidden="true">PS</div>
+        <div class="terminal-title">Windows PowerShell — HarrisFCS</div>
+        <div class="terminal-status">DEMO SESSION</div>
       </div>
       <div class="terminal-screen">
         <div class="terminal-history" id="terminal-history"></div>
-        <div class="terminal-line"><span class="terminal-prompt">admin@harrisfcs:~$</span> <span id="terminal-typing"></span><span class="terminal-cursor">▋</span></div>
+        <div class="terminal-line"><span class="terminal-prompt">PS C:\HarrisFCS&gt;</span> <span id="terminal-typing"></span><span class="terminal-cursor">▋</span></div>
       </div>
       <div class="terminal-footer"><span>monitor</span><span>patch</span><span>secure</span><span>verify</span><span>support</span></div>`;
     oldConsole.replaceWith(terminal);
@@ -62,11 +62,11 @@ if(location.pathname==='/' || location.pathname==='/index.html'){
     const typingEl=terminal.querySelector('#terminal-typing');
     const historyEl=terminal.querySelector('#terminal-history');
     const commands=[
-      {cmd:'scan --environment',out:'✓ endpoints online   ✓ patch state current'},
-      {cmd:'secure --identity',out:'✓ MFA enforced        ✓ risky access reviewed'},
-      {cmd:'verify --controls',out:'✓ backups checked     ✓ policies aligned'},
-      {cmd:'monitor --threats',out:'✓ endpoint telemetry  ✓ alerts watched'},
-      {cmd:'support --business',out:'✓ users supported    ✓ issues resolved'}
+      {cmd:'Get-Service | Where-Object Status -eq Running',out:'✓ endpoints online   ✓ patch state current'},
+      {cmd:'Get-ManagedDevice | Select-Object Name,Status',out:'✓ MFA enforced        ✓ risky access reviewed'},
+      {cmd:'Test-BackupStatus -Scope Business',out:'✓ backups checked     ✓ policies aligned'},
+      {cmd:'Get-SecuritySummary | Format-Table',out:'✓ endpoint telemetry  ✓ alerts watched'},
+      {cmd:'Get-SupportQueue | Select-Object -First 2',out:'✓ users supported    ✓ issues resolved'}
     ];
     let commandIndex=0;
     let charIndex=0;
@@ -75,7 +75,9 @@ if(location.pathname==='/' || location.pathname==='/index.html'){
     const addHistory=(entry)=>{
       const block=document.createElement('div');
       block.className='terminal-entry';
-      block.innerHTML=`<div><span class="terminal-prompt">admin@harrisfcs:~$</span> ${entry.cmd}</div><div class="terminal-output">${entry.out}</div>`;
+      block.innerHTML=`<div><span class="terminal-prompt">PS C:\HarrisFCS&gt;</span> <span class="terminal-command"></span></div><div class="terminal-output"></div>`;
+      block.querySelector('.terminal-command').textContent=entry.cmd;
+      block.querySelector('.terminal-output').textContent=entry.out;
       historyEl.appendChild(block);
       while(historyEl.children.length>3) historyEl.removeChild(historyEl.firstChild);
       terminal.querySelector('.terminal-screen').scrollTop=terminal.querySelector('.terminal-screen').scrollHeight;
