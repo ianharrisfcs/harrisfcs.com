@@ -3,7 +3,7 @@ if(!document.querySelector('link[rel="icon"]')){
   const icon=document.createElement('link');
   icon.rel='icon';
   icon.type='image/svg+xml';
-  icon.href='/favicon.svg';
+  icon.href='/favicon.svg?v=2';
   document.head.appendChild(icon);
 }
 
