@@ -36,7 +36,7 @@ document.querySelectorAll('.topbar .wrap').forEach(wrap=>{
 // content, service pages, resources, and the utility-bar WISPCheck link.
 document.querySelectorAll('.navlinks').forEach(navlinks=>{
   const contactHref=(location.pathname==='/' || location.pathname==='/index.html')?'#contact':'/#contact';
-  navlinks.innerHTML='<a href="/#industries">Industries</a><a href="/#services">Services</a><a href="/blog/">Blog</a><a href="/about/">About</a><a class="btn primary" href="'+contactHref+'">Talk to Us</a>';
+  navlinks.innerHTML='<a href="/#industries">Industries</a><a href="/#services">Services</a><a href="/blog/">Blog</a><a href="/about/">About</a><a href="/careers/">Careers</a><a class="btn primary" href="'+contactHref+'">Talk to Us</a>';
 });
 
 // Homepage terminal vignette.
