@@ -1,3 +1,12 @@
+// Set the evergreen brand favicon site-wide.
+if(!document.querySelector('link[rel="icon"]')){
+  const icon=document.createElement('link');
+  icon.rel='icon';
+  icon.type='image/svg+xml';
+  icon.href='/favicon.svg';
+  document.head.appendChild(icon);
+}
+
 // Apply the refinement layer to every page, including older landing pages.
 if(!document.querySelector('link[href="/refinements.css"]')){
   const refinementStyles=document.createElement('link');
