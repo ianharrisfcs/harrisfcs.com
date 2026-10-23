@@ -157,7 +157,7 @@ if(location.pathname==='/' || location.pathname==='/index.html'){
   }
 }
 
-// Mobile navigation.
+// Mobile navigation with compact, touch-friendly accordion groups.
 document.querySelectorAll('.nav .wrap').forEach(navWrap=>{
   const navlinks=navWrap.querySelector('.navlinks');
   if(!navlinks || navWrap.querySelector('.menu-toggle')) return;
@@ -166,12 +166,14 @@ document.querySelectorAll('.nav .wrap').forEach(navWrap=>{
   button.type='button';
   button.setAttribute('aria-expanded','false');
   button.setAttribute('aria-label','Open navigation');
+  button.setAttribute('aria-controls','harris-mobile-nav');
   button.innerHTML='<span></span><span></span><span></span>';
   const panel=document.createElement('div');
   panel.className='mobile-nav';
-  const primaryLinks=[
+  panel.id='harris-mobile-nav';
+  const services=[
     ['All Services','/#services'],
-    ['Managed IT','/managed-it-services/'],
+    ['Managed IT Services','/managed-it-services/'],
     ['Cybersecurity','/cybersecurity/'],
     ['IT Projects','/it-projects/'],
     ['Backup & Disaster Recovery','/backup-disaster-recovery/'],
@@ -179,27 +181,53 @@ document.querySelectorAll('.nav .wrap').forEach(navWrap=>{
     ['Microsoft 365 & Google Workspace','/cloud-microsoft-365-google-workspace/'],
     ['AI Hardening','/ai-hardening/'],
     ['vCISO & Compliance Advisory','/vciso-compliance-advisory/'],
-    ['WISP & Compliance','/wisp-compliance/'],
+    ['WISP & Compliance','/wisp-compliance/']
+  ];
+  const industries=[
     ['All Industries','/#industries'],
     ['Tax & Accounting','/tax-accounting-it-wisp/'],
     ['Healthcare, Dental & Chiropractic','/healthcare-it-hipaa/'],
     ['Small Business & Professional Services','/professional-services-it/'],
-    ['Retail & Multi-Site Businesses','/retail-multi-location-it/'],
-    ['Blog','/blog/'],
-    ['About','/about/'],
-    ['Careers','/careers/'],
-    ['FAQ','/faq/']
+    ['Retail & Multi-Site Businesses','/retail-multi-location-it/']
   ];
-  panel.innerHTML='<div class="mobile-nav-inner">'+primaryLinks.map(([label,href])=>`<a href="${href}">${label}</a>`).join('')+'<a class="btn primary" href="/#contact">Talk to Us</a></div>';
+  const links=items=>items.map(([label,href])=>`<a href="${href}">${label}</a>`).join('');
+  panel.innerHTML=`<div class="mobile-nav-inner">
+    <details class="mobile-nav-group"><summary>Services <span class="mobile-nav-chevron" aria-hidden="true"></span></summary><div class="mobile-nav-submenu">${links(services)}</div></details>
+    <details class="mobile-nav-group"><summary>Industries <span class="mobile-nav-chevron" aria-hidden="true"></span></summary><div class="mobile-nav-submenu">${links(industries)}</div></details>
+    <a href="/blog/">Blog</a><a href="/about/">About</a><a href="/careers/">Careers</a><a href="/faq/">FAQ</a>
+    <a class="btn primary" href="/#contact">Talk to Us</a>
+  </div>`;
   navWrap.appendChild(button);
   navWrap.parentElement.appendChild(panel);
-  const close=()=>{panel.classList.remove('open');button.classList.remove('open');button.setAttribute('aria-expanded','false');document.body.classList.remove('menu-open')};
+  const groups=[...panel.querySelectorAll('.mobile-nav-group')];
+  groups.forEach(group=>group.addEventListener('toggle',()=>{
+    if(group.open)groups.filter(other=>other!==group).forEach(other=>other.open=false);
+  }));
+  const close=()=>{
+    panel.classList.remove('open');
+    button.classList.remove('open');
+    button.setAttribute('aria-expanded','false');
+    button.setAttribute('aria-label','Open navigation');
+    document.body.classList.remove('menu-open');
+    groups.forEach(group=>group.open=false);
+  };
   button.addEventListener('click',()=>{
     const open=!panel.classList.contains('open');
-    panel.classList.toggle('open',open);button.classList.toggle('open',open);button.setAttribute('aria-expanded',String(open));document.body.classList.toggle('menu-open',open);
+    if(!open){close();return;}
+    panel.classList.add('open');
+    button.classList.add('open');
+    button.setAttribute('aria-expanded','true');
+    button.setAttribute('aria-label','Close navigation');
+    document.body.classList.add('menu-open');
   });
   panel.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
-  window.addEventListener('resize',()=>{if(window.innerWidth>780) close()});
+  document.addEventListener('keydown',event=>{
+    if(event.key==='Escape'&&panel.classList.contains('open')){close();button.focus();}
+  });
+  document.addEventListener('click',event=>{
+    if(panel.classList.contains('open')&&!panel.contains(event.target)&&!button.contains(event.target))close();
+  });
+  window.addEventListener('resize',()=>{if(window.innerWidth>780)close()});
 });
 
 // Remove any Netlify promotional badge/tag if injected into the page.
