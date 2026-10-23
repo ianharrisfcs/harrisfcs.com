@@ -40,12 +40,52 @@ document.querySelectorAll('.topbar .wrap').forEach(wrap=>{
   links.innerHTML='<a href="mailto:office@harrisfcs.com">office@harrisfcs.com</a><a href="tel:+15412040597">541-204-0597</a><a href="https://wispcheck.com" target="_blank" rel="noopener">WISPCheck ↗</a><a href="https://www.skool.com/securetax-network-3635" target="_blank" rel="noopener">Skool ↗</a><a href="https://harrisfcs.rmmservices.net/" target="_blank" rel="noopener">Client Portal ↗</a>';
 });
 
-// One primary navigation model across the whole site.
-// Industry/service discovery stays prominent; WISP remains available in page
-// content, service pages, resources, and the utility-bar WISPCheck link.
+// Shared navigation with accessible dropdowns for services and industries.
 document.querySelectorAll('.navlinks').forEach(navlinks=>{
   const contactHref=(location.pathname==='/' || location.pathname==='/index.html')?'#contact':'/#contact';
-  navlinks.innerHTML='<a href="/#industries">Industries</a><a href="/#services">Services</a><a href="/blog/">Blog</a><a href="/about/">About</a><a href="/careers/">Careers</a><a class="btn primary" href="'+contactHref+'">Talk to Us</a>';
+  navlinks.innerHTML=`
+    <details class="nav-dropdown"><summary>Services <span class="nav-chevron" aria-hidden="true"></span></summary>
+      <div class="nav-dropdown-menu">
+        <a href="/#services" class="nav-dropdown-heading">All services</a>
+        <a href="/managed-it-services/">Managed IT Services</a>
+        <a href="/cybersecurity/">Cybersecurity</a>
+        <a href="/it-projects/">IT Projects</a>
+        <a href="/backup-disaster-recovery/">Backup &amp; Disaster Recovery</a>
+        <a href="/network-infrastructure/">Network &amp; Infrastructure</a>
+        <a href="/cloud-microsoft-365-google-workspace/">Microsoft 365 &amp; Google Workspace</a>
+        <a href="/ai-hardening/">AI Hardening</a>
+        <a href="/vciso-compliance-advisory/">vCISO &amp; Compliance Advisory</a>
+        <a href="/wisp-compliance/">WISP &amp; Compliance</a>
+      </div>
+    </details>
+    <details class="nav-dropdown"><summary>Industries <span class="nav-chevron" aria-hidden="true"></span></summary>
+      <div class="nav-dropdown-menu">
+        <a href="/#industries" class="nav-dropdown-heading">All industries</a>
+        <a href="/tax-accounting-it-wisp/">Tax &amp; Accounting</a>
+        <a href="/healthcare-it-hipaa/">Healthcare, Dental &amp; Chiropractic</a>
+        <a href="/professional-services-it/">Small Business &amp; Professional Services</a>
+        <a href="/retail-multi-location-it/">Retail &amp; Multi-Site Businesses</a>
+      </div>
+    </details>
+    <a href="/blog/">Blog</a>
+    <a href="/about/">About</a>
+    <a href="/careers/">Careers</a>
+    <a class="btn primary" href="${contactHref}">Talk to Us</a>`;
+  const dropdowns=[...navlinks.querySelectorAll('.nav-dropdown')];
+  dropdowns.forEach(dropdown=>{
+    dropdown.addEventListener('toggle',()=>{
+      if(dropdown.open) dropdowns.filter(other=>other!==dropdown).forEach(other=>other.open=false);
+    });
+    dropdown.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){dropdown.open=false;dropdown.querySelector('summary').focus();}
+    });
+  });
+  document.addEventListener('click',event=>{
+    if(!navlinks.contains(event.target))dropdowns.forEach(dropdown=>dropdown.open=false);
+  });
+  navlinks.querySelectorAll('.nav-dropdown-menu a').forEach(link=>link.addEventListener('click',()=>{
+    dropdowns.forEach(dropdown=>dropdown.open=false);
+  }));
 });
 
 // Homepage terminal vignette.
@@ -130,18 +170,25 @@ document.querySelectorAll('.nav .wrap').forEach(navWrap=>{
   const panel=document.createElement('div');
   panel.className='mobile-nav';
   const primaryLinks=[
-    ['Industries','/#industries'],
-    ['Services','/#services'],
+    ['All Services','/#services'],
     ['Managed IT','/managed-it-services/'],
     ['Cybersecurity','/cybersecurity/'],
     ['IT Projects','/it-projects/'],
+    ['Backup & Disaster Recovery','/backup-disaster-recovery/'],
+    ['Network & Infrastructure','/network-infrastructure/'],
+    ['Microsoft 365 & Google Workspace','/cloud-microsoft-365-google-workspace/'],
+    ['AI Hardening','/ai-hardening/'],
+    ['vCISO & Compliance Advisory','/vciso-compliance-advisory/'],
+    ['WISP & Compliance','/wisp-compliance/'],
+    ['All Industries','/#industries'],
     ['Tax & Accounting','/tax-accounting-it-wisp/'],
-    ['Healthcare','/healthcare-it-hipaa/'],
-    ['WISPCheck','https://wispcheck.com'],
+    ['Healthcare, Dental & Chiropractic','/healthcare-it-hipaa/'],
+    ['Small Business & Professional Services','/professional-services-it/'],
+    ['Retail & Multi-Site Businesses','/retail-multi-location-it/'],
     ['Blog','/blog/'],
     ['About','/about/'],
-    ['FAQ','/faq/'],
-    ['Client Portal','https://harrisfcs.rmmservices.net/']
+    ['Careers','/careers/'],
+    ['FAQ','/faq/']
   ];
   panel.innerHTML='<div class="mobile-nav-inner">'+primaryLinks.map(([label,href])=>`<a href="${href}">${label}</a>`).join('')+'<a class="btn primary" href="/#contact">Talk to Us</a></div>';
   navWrap.appendChild(button);
