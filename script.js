@@ -67,7 +67,8 @@ document.querySelectorAll('.navlinks').forEach(navlinks=>{
         <a href="/retail-multi-location-it/">Retail &amp; Multi-Site Businesses</a>
       </div>
     </details>
-    <a href="/resources/">Resources</a>\n    <a href="/blog/">Blog</a>
+    <a href="/resources/">Resources</a>
+    <a href="/blog/">Blog</a>
     <a href="/about/">About</a>
     <a href="/careers/">Careers</a>
     <a class="btn primary" href="${contactHref}">Talk to Us</a>`;
@@ -307,3 +308,31 @@ document.querySelectorAll('footer').forEach(footer=>{
     <div><strong>Company &amp; links</strong><p><a href="/about/">About</a><br><a href="/careers/">Careers</a><br><a href="/faq/">FAQ</a><br><a href="/privacy/">Privacy</a><br><a href="https://wispcheck.com">WISPCheck</a><br><a href="https://harrisfcs.rmmservices.net/">Client Portal</a></p></div>
   </div><div class="fine">© <span data-year>${new Date().getFullYear()}</span> HarrisFCS. Compliance support is not legal advice.</div></div>`;
 });
+
+// Filter the Resource Center catalog as more guides are published.
+(function(){
+  const search=document.getElementById('resource-search');
+  const pills=[...document.querySelectorAll('.resource-pill')];
+  const cards=[...document.querySelectorAll('.resource-library-card')];
+  const empty=document.querySelector('.resource-no-results');
+  if(!search||!cards.length)return;
+  let category='all';
+  const filter=()=>{
+    const query=search.value.trim().toLowerCase();
+    let count=0;
+    cards.forEach(card=>{
+      const matchesText=(card.textContent+' '+(card.dataset.title||'')).toLowerCase().includes(query);
+      const matchesCategory=category==='all'||(card.dataset.categories||'').includes(category);
+      const visible=matchesText&&matchesCategory;
+      card.hidden=!visible;
+      if(visible)count++;
+    });
+    if(empty)empty.hidden=count>0;
+  };
+  search.addEventListener('input',filter);
+  pills.forEach(pill=>pill.addEventListener('click',()=>{
+    category=pill.dataset.filter||'all';
+    pills.forEach(item=>item.classList.toggle('active',item===pill));
+    filter();
+  }));
+})();
