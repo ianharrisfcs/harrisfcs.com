@@ -67,7 +67,7 @@ document.querySelectorAll('.navlinks').forEach(navlinks=>{
         <a href="/retail-multi-location-it/">Retail &amp; Multi-Site Businesses</a>
       </div>
     </details>
-    <a href="/blog/">Blog</a>
+    <a href="/resources/">Resources</a>\n    <a href="/blog/">Blog</a>
     <a href="/about/">About</a>
     <a href="/careers/">Careers</a>
     <a class="btn primary" href="${contactHref}">Talk to Us</a>`;
@@ -194,7 +194,7 @@ document.querySelectorAll('.nav .wrap').forEach(navWrap=>{
   panel.innerHTML=`<div class="mobile-nav-inner">
     <details class="mobile-nav-group"><summary>Services <span class="mobile-nav-chevron" aria-hidden="true"></span></summary><div class="mobile-nav-submenu">${links(services)}</div></details>
     <details class="mobile-nav-group"><summary>Industries <span class="mobile-nav-chevron" aria-hidden="true"></span></summary><div class="mobile-nav-submenu">${links(industries)}</div></details>
-    <a href="/blog/">Blog</a><a href="/about/">About</a><a href="/careers/">Careers</a><a href="/faq/">FAQ</a>
+    <a href="/resources/">Resources</a><a href="/blog/">Blog</a><a href="/about/">About</a><a href="/careers/">Careers</a><a href="/faq/">FAQ</a>
     <a class="btn primary" href="/#contact">Talk to Us</a>
   </div>`;
   navWrap.appendChild(button);
@@ -298,3 +298,12 @@ const curatedGoogleReviews=[{"name":"Zak Barsuglia","text":"Ian is super knowled
  prev.addEventListener('click',()=>shift(-1));next.addEventListener('click',()=>shift(1));
  window.addEventListener('resize',render);requestAnimationFrame(animate);
 })();
+
+// Standardize the footer across all site pages.
+document.querySelectorAll('footer').forEach(footer=>{
+  footer.innerHTML=`<div class="wrap"><div class="footergrid">
+    <div><a class="brand" href="/">Harris<span>FCS</span></a><p>Independent, family-owned managed IT, security, and compliance services for businesses.</p><p><a href="mailto:office@harrisfcs.com">office@harrisfcs.com</a><br><a href="tel:+15412040597">541-204-0597</a></p></div>
+    <div><strong>Explore</strong><p><a href="/managed-it-services/">Managed IT</a><br><a href="/cybersecurity/">Cybersecurity</a><br><a href="/it-projects/">IT Projects</a><br><a href="/resources/">Free Resources</a><br><a href="/blog/">Blog</a></p></div>
+    <div><strong>Company &amp; links</strong><p><a href="/about/">About</a><br><a href="/careers/">Careers</a><br><a href="/faq/">FAQ</a><br><a href="/privacy/">Privacy</a><br><a href="https://wispcheck.com">WISPCheck</a><br><a href="https://harrisfcs.rmmservices.net/">Client Portal</a></p></div>
+  </div><div class="fine">© <span data-year>${new Date().getFullYear()}</span> HarrisFCS. Compliance support is not legal advice.</div></div>`;
+});
