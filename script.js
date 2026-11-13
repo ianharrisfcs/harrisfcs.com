@@ -336,3 +336,19 @@ document.querySelectorAll('footer').forEach(footer=>{
     filter();
   }));
 })();
+
+
+// Shared EmailOctopus newsletter signup, placed immediately above every footer.
+document.querySelectorAll('footer').forEach(footer=>{
+  if(footer.previousElementSibling?.classList.contains('harris-newsletter'))return;
+  const section=document.createElement('section');
+  section.className='harris-newsletter';
+  section.setAttribute('aria-label','HarrisFCS email newsletter');
+  section.innerHTML='<div class="wrap"><div class="harris-newsletter-heading"><span class="eyebrow">HarrisFCS newsletter</span><h2>Security isn\'t someone else\'s problem.</h2><p>Practical advice for business owners responsible for protecting their operations and clients.</p></div><div class="harris-newsletter-form" id="harris-emailoctopus-form"></div></div>';
+  footer.before(section);
+  const script=document.createElement('script');
+  script.async=true;
+  script.src='https://eomail5.com/form/b99d34a8-defe-11f1-beda-f12172b5bc25.js';
+  script.dataset.form='b99d34a8-defe-11f1-beda-f12172b5bc25';
+  section.querySelector('.harris-newsletter-form').appendChild(script);
+});
