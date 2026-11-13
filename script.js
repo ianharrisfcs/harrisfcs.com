@@ -344,7 +344,7 @@ document.querySelectorAll('footer').forEach(footer=>{
   const section=document.createElement('section');
   section.className='harris-newsletter';
   section.setAttribute('aria-label','HarrisFCS email newsletter');
-  section.innerHTML='<div class="wrap"><div class="harris-newsletter-heading"><span class="eyebrow">HarrisFCS newsletter</span><h2>Security isn\'t someone else\'s problem.</h2><p>Practical advice for business owners responsible for protecting their operations and clients.</p></div><div class="harris-newsletter-form" id="harris-emailoctopus-form"></div></div>';
+  section.innerHTML='<div class="wrap"><div class="harris-newsletter-form" id="harris-emailoctopus-form"></div></div>';
   footer.before(section);
   const script=document.createElement('script');
   script.async=true;
